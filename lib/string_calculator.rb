@@ -5,7 +5,10 @@ class StringCalculator
     delimiter, numbers = extract_delimiter(numbers)
     validate_negative_numbers(numbers, delimiter)
 
-    numbers.split(delimiter).sum(&:to_i)
+    numbers.split(delimiter)
+      .map(&:to_i)
+      .reject { |number| number > 1000 }
+      .sum
   end
 
   private
