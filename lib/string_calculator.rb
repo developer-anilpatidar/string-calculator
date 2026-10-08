@@ -17,12 +17,17 @@ class StringCalculator
     # Custom format: "//[delimiter]\n[numbers]"
     # Example: "//;\n1;2" uses ";" as the delimiter.
     # Example: "//[***]\n1***2***3" uses "***" as the delimiter.
+    # Multiple delimiters Example: "//[delim1][delim2]\n[numbers]"
 
     if numbers.start_with?("//")
       delimiter, numbers = numbers[2..].split("\n", 2)
-      delimiter = delimiter[1...-1] if delimiter.start_with?("[") && delimiter.end_with?("]")
+      delimiters = delimiter.scan(/\[([^\]]+)\]/).flatten
 
-      [delimiter, numbers]
+      if delimiters.empty?
+        [delimiter, numbers]
+      else
+        [Regexp.union(delimiters), numbers]
+      end
     else
       [/,|\n/, numbers]
     end
