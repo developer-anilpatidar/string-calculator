@@ -16,9 +16,12 @@ class StringCalculator
   def extract_delimiter(numbers)
     # Custom format: "//[delimiter]\n[numbers]"
     # Example: "//;\n1;2" uses ";" as the delimiter.
+    # Example: "//[***]\n1***2***3" uses "***" as the delimiter.
 
     if numbers.start_with?("//")
       delimiter, numbers = numbers[2..].split("\n", 2)
+      delimiter = delimiter[1...-1] if delimiter.start_with?("[") && delimiter.end_with?("]")
+
       [delimiter, numbers]
     else
       [/,|\n/, numbers]
