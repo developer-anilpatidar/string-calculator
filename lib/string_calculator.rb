@@ -3,6 +3,7 @@ class StringCalculator
     return 0 if numbers.empty?
 
     delimiter, numbers = extract_delimiter(numbers)
+    validate_negative_numbers(numbers, delimiter)
 
     numbers.split(delimiter).sum(&:to_i)
   end
@@ -19,5 +20,12 @@ class StringCalculator
     else
       [/,|\n/, numbers]
     end
+  end
+
+  def validate_negative_numbers(numbers, delimiter)
+    negatives = numbers.split(delimiter).select { |number| number.to_i.negative? }
+    return if negatives.empty?
+
+    raise "negative numbers not allowed #{negatives.join(",")}"
   end
 end
